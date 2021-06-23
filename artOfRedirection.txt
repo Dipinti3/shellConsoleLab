@@ -1,0 +1,102 @@
+dipinti@zipcodes-MBP ~ % mkdir -p dipinti/dev/myNewTestDir
+dipinti@zipcodes-MBP ~ % treww
+zsh: command not found: treww
+dipinti@zipcodes-MBP ~ % tree
+zsh: command not found: tree
+dipinti@zipcodes-MBP ~ % ls
+DayOneDemo	Documents	Movies		Public
+Desktop		Downloads	Music		dipinti
+Dev		Library		Pictures
+dipinti@zipcodes-MBP ~ % cd dipinti
+dipinti@zipcodes-MBP dipinti % ls
+dev
+dipinti@zipcodes-MBP dipinti % cd dev
+dipinti@zipcodes-MBP dev % ls
+myNewTestDir
+dipinti@zipcodes-MBP dev % find / -name core >corefiles.log 2>/dev/null
+dipinti@zipcodes-MBP dev % grep -i lib corefiles.log
+/usr/local/lib/node_modules/@angular/cli/node_modules/@angular-devkit/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/dist/vocabularies/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/lib/vocabularies/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/platform/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/visualvm/core
+/System/Library/AssetsV2/com_apple_MobileAsset_MacSoftwareUpdate/5968e4faeba359dd5270ac282340cc4bd94d348c.asset/AssetData/payloadv2/ecc_data/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Volumes/Update/mnt1/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Volumes/Data/usr/local/lib/node_modules/@angular/cli/node_modules/@angular-devkit/core
+/System/Volumes/Data/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/dist/vocabularies/core
+/System/Volumes/Data/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/lib/vocabularies/core
+/System/Volumes/Data/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Volumes/Data/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Volumes/Data/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/platform/core
+/System/Volumes/Data/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/visualvm/core
+/System/Volumes/Data/System/Library/AssetsV2/com_apple_MobileAsset_MacSoftwareUpdate/5968e4faeba359dd5270ac282340cc4bd94d348c.asset/AssetData/payloadv2/ecc_data/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Volumes/Data/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Volumes/Data/Applications/IntelliJ IDEA.app/Contents/plugins/spy-js/server/node_modules/archiver/lib/modules/core
+/Applications/IntelliJ IDEA.app/Contents/plugins/spy-js/server/node_modules/archiver/lib/modules/core
+dipinti@zipcodes-MBP dev % find / -name core >corefiles.log 2>/dev/null | grep -i lib corefiles.log
+dipinti@zipcodes-MBP dev % find / -name core >corefiles.log | grep -i lib corefiles.log
+find: /usr/sbin/authserver: Permission denied
+find: /Library/Application Support/Apple/ParentalControls/Users: Permission denied
+find: /Library/Application Support/Apple/AssetCache/Data: Permission denied
+find: /Library/Application Support/ApplePushService: Permission denied
+find: /Library/Application Support/com.apple.TCC: Operation not permitted
+dipinti@zipcodes-MBP dev % find / -name core >corefiles.log 2>/dev/null | grep -i lib corefiles.log &
+[1] 1714 1715
+dipinti@zipcodes-MBP dev % 
+[1]  + broken pipe  find / -name core > corefiles.log 2> /dev/null | 
+       exit 1       grep -i lib corefiles.log
+dipinti@zipcodes-MBP dev % python -m SimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+^CTraceback (most recent call last):
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/runpy.py", line 174, in _run_module_as_main
+    "__main__", fname, loader, pkg_name)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/runpy.py", line 72, in _run_code
+    exec code in run_globals
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/SimpleHTTPServer.py", line 235, in <module>
+    test()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/SimpleHTTPServer.py", line 231, in test
+    BaseHTTPServer.test(HandlerClass, ServerClass)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/BaseHTTPServer.py", line 610, in test
+    httpd.serve_forever()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/SocketServer.py", line 231, in serve_forever
+    poll_interval)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/SocketServer.py", line 150, in _eintr_retry
+    return func(*args)
+KeyboardInterrupt
+dipinti@zipcodes-MBP dev % python -m SimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+^Z
+zsh: suspended  python -m SimpleHTTPServer
+dipinti@zipcodes-MBP dev % jobs
+[1]  + suspended  python -m SimpleHTTPServer
+dipinti@zipcodes-MBP dev % fg
+[1]  + continued  python -m SimpleHTTPServer
+^Z
+zsh: suspended  python -m SimpleHTTPServer
+dipinti@zipcodes-MBP dev % bg
+[1]  + continued  python -m SimpleHTTPServer
+dipinti@zipcodes-MBP dev % jobs
+[1]  + running    python -m SimpleHTTPServer
+dipinti@zipcodes-MBP dev % fg
+[1]  + running    python -m SimpleHTTPServer
+^CTraceback (most recent call last):
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/runpy.py", line 174, in _run_module_as_main
+    "__main__", fname, loader, pkg_name)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/runpy.py", line 72, in _run_code
+    exec code in run_globals
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/SimpleHTTPServer.py", line 235, in <module>
+    test()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/SimpleHTTPServer.py", line 231, in test
+    BaseHTTPServer.test(HandlerClass, ServerClass)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/BaseHTTPServer.py", line 610, in test
+    httpd.serve_forever()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/SocketServer.py", line 231, in serve_forever
+    poll_interval)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/SocketServer.py", line 150, in _eintr_retry
+    return func(*args)
+KeyboardInterrupt
+dipinti@zipcodes-MBP dev % 
+
