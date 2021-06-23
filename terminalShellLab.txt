@@ -1,0 +1,694 @@
+Last login: Tue Jun 22 22:28:00 on ttys000
+dipinti@zipcodes-MBP ~ % pwd
+/Users/dipinti
+dipinti@zipcodes-MBP ~ % ls
+DayOneDemo	Dev		Downloads	Movies		Pictures
+Desktop		Documents	Library		Music		Public
+dipinti@zipcodes-MBP ~ % cd Dev
+dipinti@zipcodes-MBP Dev % ls
+CR-MicroLabs-Git-MyFirstFork	myfile3.txt
+DreamHouse-BlueJ		myfile6
+myFile.txt			newfile1.txt
+myFile2.txt			newfile2.txt
+myfile1.txt			panda
+dipinti@zipcodes-MBP Dev % rm myFile.txt
+dipinti@zipcodes-MBP Dev % ls
+CR-MicroLabs-Git-MyFirstFork	myfile6
+DreamHouse-BlueJ		newfile1.txt
+myFile2.txt			newfile2.txt
+myfile1.txt			panda
+myfile3.txt
+dipinti@zipcodes-MBP Dev % rm myFile1.txt
+dipinti@zipcodes-MBP Dev % rm myfile1.txt
+rm: myfile1.txt: No such file or directory
+dipinti@zipcodes-MBP Dev % ls
+CR-MicroLabs-Git-MyFirstFork	myfile6
+DreamHouse-BlueJ		newfile1.txt
+myFile2.txt			newfile2.txt
+myfile3.txt			panda
+dipinti@zipcodes-MBP Dev % rm myFile2.txt
+dipinti@zipcodes-MBP Dev % ls
+CR-MicroLabs-Git-MyFirstFork	newfile1.txt
+DreamHouse-BlueJ		newfile2.txt
+myfile3.txt			panda
+myfile6
+dipinti@zipcodes-MBP Dev % rm myfile3.txt
+dipinti@zipcodes-MBP Dev % rm myfile6
+dipinti@zipcodes-MBP Dev % rm newfile1.txt
+dipinti@zipcodes-MBP Dev % rm newfile2.txt
+dipinti@zipcodes-MBP Dev % ls
+CR-MicroLabs-Git-MyFirstFork	panda
+DreamHouse-BlueJ
+dipinti@zipcodes-MBP Dev % clear
+
+dipinti@zipcodes-MBP Dev % mkdir Shell.Console-Lab
+dipinti@zipcodes-MBP Dev % ls
+CR-MicroLabs-Git-MyFirstFork	Shell.Console-Lab
+DreamHouse-BlueJ		panda
+dipinti@zipcodes-MBP Dev % cd Shell.Console-Lab
+dipinti@zipcodes-MBP Shell.Console-Lab % clear
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dipinti@zipcodes-MBP Shell.Console-Lab % echo "Hello Terminal" >myFile.txt
+dipinti@zipcodes-MBP Shell.Console-Lab % ls
+myFile.txt
+dipinti@zipcodes-MBP Shell.Console-Lab % cat myFile.txt
+Hello Terminal
+dipinti@zipcodes-MBP Shell.Console-Lab % echo "This is Dipinti." >myFile2.txt
+dipinti@zipcodes-MBP Shell.Console-Lab % cat myFile.txt myFile2.txt
+Hello Terminal
+This is Dipinti.
+dipinti@zipcodes-MBP Shell.Console-Lab % cat /etc/bashrc_Apple_Terminal
+# bash support for Terminal.
+
+
+# Working Directory
+#
+# Tell the terminal about the current working directory at each prompt.
+
+if [ -z "$INSIDE_EMACS" ]; then
+    update_terminal_cwd() {
+	# Identify the directory using a "file:" scheme URL, including
+	# the host name to disambiguate local vs. remote paths.
+	
+	# Percent-encode the pathname.
+	local url_path=''
+	{
+	    # Use LC_CTYPE=C to process text byte-by-byte and
+	    # LC_COLLATE=C to compare byte-for-byte. Ensure that
+	    # LC_ALL and LANG are not set so they don't interfere.
+	    local i ch hexch LC_CTYPE=C LC_COLLATE=C LC_ALL= LANG=
+	    for ((i = 0; i < ${#PWD}; ++i)); do
+		ch="${PWD:i:1}"
+		if [[ "$ch" =~ [/._~A-Za-z0-9-] ]]; then
+		    url_path+="$ch"
+		else
+		    printf -v hexch "%02X" "'$ch"
+		    # printf treats values greater than 127 as
+		    # negative and pads with "FF", so truncate.
+		    url_path+="%${hexch: -2:2}"
+		fi
+	    done
+	}
+	
+	printf '\e]7;%s\a' "file://$HOSTNAME$url_path"
+    }
+    PROMPT_COMMAND="update_terminal_cwd${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+fi
+
+
+# Resume Support: Save/Restore Shell State
+#
+# Terminal assigns each terminal session a unique identifier and
+# communicates it via the TERM_SESSION_ID environment variable so that
+# programs running in a terminal can save/restore application-specific
+# state when quitting and restarting Terminal with Resume enabled.
+#
+# The following code defines a shell save/restore mechanism. Users can
+# add custom state by defining a shell_session_save_user_state function
+# that writes restoration commands to the session file at exit. e.g.,
+# to save a variable:
+#
+#   shell_session_save_user_state() { echo MY_VAR="'$MY_VAR'" >> "$SHELL_SESSION_FILE"; }
+#
+# During shell startup the session file is executed. Old files are
+# periodically deleted.
+#
+# The default behavior arranges to save and restore the bash command
+# history independently for each restored terminal session. It also
+# merges commands into the global history for new sessions. Because
+# of this it is recommended that you set HISTSIZE and HISTFILESIZE to
+# larger values.
+#
+# You may disable this behavior and share a single history by setting
+# SHELL_SESSION_HISTORY to 0. There are some common user customizations
+# that arrange to share new commands among running shells by
+# manipulating the history at each prompt, and they typically include
+# 'shopt -s histappend'; therefore, if the histappend shell option is
+# enabled, per-session history is disabled by default. You may
+# explicitly enable it by setting SHELL_SESSION_HISTORY to 1.
+#
+# The implementation of per-session command histories in combination
+# with a shared global command history is incompatible with the
+# HISTTIMEFORMAT variable--the timestamps are applied inconsistently
+# to different parts of the history; therefore, if HISTTIMEFORMAT is
+# defined, per-session history is disabled by default.
+#
+# Note that this uses PROMPT_COMMAND to enable per-session history
+# the first time for each new session. If you customize PROMPT_COMMAND
+# be sure to include the previous value. e.g.,
+#
+#   PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }your_code_here"
+#
+# Otherwise, the per-session history won't take effect until the first
+# restore.
+#
+# The save/restore mechanism is disabled if the following file exists:
+#
+#   ~/.bash_sessions_disable
+
+if [ ${SHELL_SESSION_DID_INIT:-0} -eq 0 ] && [ -n "$TERM_SESSION_ID" ] && [ ! -e "$HOME/.bash_sessions_disable" ]; then
+    
+    # Do not perform this setup more than once (which shouldn't occur
+    # unless the user's ~/.bash_profile executes /etc/profile, which
+    # is normally redundant).
+    SHELL_SESSION_DID_INIT=1
+    
+    # Set up the session directory/file.
+    SHELL_SESSION_DIR="$HOME/.bash_sessions"
+    SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"
+    mkdir -m 700 -p "$SHELL_SESSION_DIR"
+    
+    #
+    # Restore previous session state.
+    #
+    
+    if [ -r "$SHELL_SESSION_FILE" ]; then
+	. "$SHELL_SESSION_FILE"
+	rm "$SHELL_SESSION_FILE"
+    fi
+    
+    #
+    # Note: Use absolute paths to invoke commands in the exit code and
+    # anything else that runs after user startup files, because the
+    # search path may have been modified.
+    #
+    
+    #
+    # Arrange for per-session shell command history.
+    #
+    
+    shell_session_history_allowed() {
+	# Return whether per-session history should be enabled.
+	if [ -n "$HISTFILE" ]; then
+	    # If this defaults to off, leave it unset so that we can
+	    # check again later. If it defaults to on, make it stick.
+	    local allowed=0
+	    if shopt -q histappend || [ -n "$HISTTIMEFORMAT" ]; then
+		allowed=${SHELL_SESSION_HISTORY:-0}
+	    else
+		allowed=${SHELL_SESSION_HISTORY:=1}
+	    fi
+	    if [ $allowed -eq 1 ]; then
+		return 0
+	    fi
+	fi
+	return 1
+    }
+    
+    if [ ${SHELL_SESSION_HISTORY:-1} -eq 1 ]; then
+	SHELL_SESSION_HISTFILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.history"
+	SHELL_SESSION_HISTFILE_NEW="$SHELL_SESSION_DIR/$TERM_SESSION_ID.historynew"
+	SHELL_SESSION_HISTFILE_SHARED="$HISTFILE"
+	
+	shell_session_history_enable() {
+	    (umask 077; /usr/bin/touch "$SHELL_SESSION_HISTFILE_NEW")
+	    HISTFILE="$SHELL_SESSION_HISTFILE_NEW"
+	    SHELL_SESSION_HISTORY=1
+	}
+	
+	# If the session history already exists and isn't empty, start
+	# using it now; otherwise, we'll use the shared history until
+	# we've determined whether users have enabled/disabled this.
+	if [ -s "$SHELL_SESSION_HISTFILE" ]; then
+	    history -r "$SHELL_SESSION_HISTFILE"
+	    shell_session_history_enable
+	else
+	    # At the first prompt, check whether per-session history should
+	    # be enabled. Delaying until after user scripts have run allows
+	    # users to opt in or out. If this doesn't get executed (because
+	    # the user has replaced PROMPT_COMMAND instead of concatenating
+	    # it), we'll check at shell exit; that works, but doesn't start
+	    # the per-session history until the first restore.
+	    
+	    shell_session_history_check() {
+		if [ ${SHELL_SESSION_DID_HISTORY_CHECK:-0} -eq 0 ]; then
+		    SHELL_SESSION_DID_HISTORY_CHECK=1
+		    if shell_session_history_allowed; then
+			shell_session_history_enable
+		    fi
+		    # Remove this check if we can; otherwise, we rely on the
+		    # variable above to prevent checking more than once.
+		    if [ "$PROMPT_COMMAND" = "shell_session_history_check" ]; then
+			unset PROMPT_COMMAND
+		    elif [[ $PROMPT_COMMAND =~ (.*)(; *shell_session_history_check *| *shell_session_history_check *; *)(.*) ]]; then
+			PROMPT_COMMAND="${BASH_REMATCH[1]}${BASH_REMATCH[3]}"
+		    fi
+		fi
+	    }
+	    PROMPT_COMMAND="shell_session_history_check${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+	fi
+	
+	shell_session_save_history() {
+	    # Save new history to an intermediate file so we can copy it.
+	    shell_session_history_enable
+	    history -a
+	    # If the session history doesn't exist yet, copy the shared history.
+	    if [ -f "$SHELL_SESSION_HISTFILE_SHARED" ] && [ ! -s "$SHELL_SESSION_HISTFILE" ]; then
+		echo -ne '\n...copying shared history...'
+		(umask 077; /bin/cp "$SHELL_SESSION_HISTFILE_SHARED" "$SHELL_SESSION_HISTFILE")
+	    fi
+	    # Save new history to the per-session and shared files.
+	    echo -ne '\n...saving history...'
+	    (umask 077; /bin/cat "$SHELL_SESSION_HISTFILE_NEW" >> "$SHELL_SESSION_HISTFILE_SHARED")
+	    (umask 077; /bin/cat "$SHELL_SESSION_HISTFILE_NEW" >> "$SHELL_SESSION_HISTFILE")
+	    : >| "$SHELL_SESSION_HISTFILE_NEW"
+	    # If there is a history file size limit, apply it to the files.
+	    if [ -n "$HISTFILESIZE" ]; then
+		echo -n 'truncating history files...'
+		HISTFILE="$SHELL_SESSION_HISTFILE_SHARED"
+		HISTFILESIZE="$HISTFILESIZE"
+		HISTFILE="$SHELL_SESSION_HISTFILE"
+		HISTFILESIZE="$size"
+		HISTFILE="$SHELL_SESSION_HISTFILE_NEW"
+	    fi
+	    echo -ne '\n...'
+	}
+    fi
+    
+    #
+    # Arrange to save session state when exiting the shell.
+    #
+    
+    shell_session_save() {
+	# Save the current state.
+	if [ -n "$SHELL_SESSION_FILE" ]; then
+	    echo -n 'Saving session...'
+	    (umask 077; echo 'echo Restored session: "$(/bin/date -r '$(/bin/date +%s)')"' >| "$SHELL_SESSION_FILE")
+	    declare -F shell_session_save_user_state >/dev/null && shell_session_save_user_state
+	    shell_session_history_allowed && shell_session_save_history
+	    echo 'completed.'
+	fi
+    }
+    
+    # Delete old session files. (Not more than once a day.)
+    SHELL_SESSION_TIMESTAMP_FILE="$SHELL_SESSION_DIR/_expiration_check_timestamp"
+    shell_session_delete_expired() {
+	if ([ ! -e "$SHELL_SESSION_TIMESTAMP_FILE" ] || [ -z "$(/usr/bin/find "$SHELL_SESSION_TIMESTAMP_FILE" -mtime -1d)" ]); then
+	    local expiration_lock_file="$SHELL_SESSION_DIR/_expiration_lockfile"
+	    if /usr/bin/shlock -f "$expiration_lock_file" -p $$; then
+		echo -n 'Deleting expired sessions...'
+		local delete_count=$(/usr/bin/find "$SHELL_SESSION_DIR" -type f -mtime +2w -print -delete | /usr/bin/wc -l)
+		[ "$delete_count" -gt 0 ] && echo $delete_count' completed.' || echo 'none found.'
+		(umask 077; /usr/bin/touch "$SHELL_SESSION_TIMESTAMP_FILE")
+		/bin/rm "$expiration_lock_file"
+	    fi
+	fi
+    }
+    
+    # Update saved session state when exiting.
+    shell_session_update() {
+	shell_session_save && shell_session_delete_expired
+    }
+    trap shell_session_update EXIT
+fi
+dipinti@zipcodes-MBP Shell.Console-Lab % less /etc/bashrc_Apple_Terminal
+dipinti@zipcodes-MBP Shell.Console-Lab % grep Hello myFile.txt
+Hello Terminal
+dipinti@zipcodes-MBP Shell.Console-Lab % grep Nobody myFile.txt
+dipinti@zipcodes-MBP Shell.Console-Lab % touch myfile1
+dipinti@zipcodes-MBP Shell.Console-Lab % touch myfile2
+dipinti@zipcodes-MBP Shell.Console-Lab % touch myfile3 myfile4 myfile5
+dipinti@zipcodes-MBP Shell.Console-Lab % ls -lT
+total 16
+-rw-r--r--  1 dipinti  staff  15 Jun 22 22:33:06 2021 myFile.txt
+-rw-r--r--  1 dipinti  staff  17 Jun 22 22:33:59 2021 myFile2.txt
+-rw-r--r--  1 dipinti  staff   0 Jun 22 22:37:59 2021 myfile1
+-rw-r--r--  1 dipinti  staff   0 Jun 22 22:38:04 2021 myfile2
+-rw-r--r--  1 dipinti  staff   0 Jun 22 22:38:33 2021 myfile3
+-rw-r--r--  1 dipinti  staff   0 Jun 22 22:38:33 2021 myfile4
+-rw-r--r--  1 dipinti  staff   0 Jun 22 22:38:33 2021 myfile5
+dipinti@zipcodes-MBP Shell.Console-Lab % vim
+dipinti@zipcodes-MBP Shell.Console-Lab % vim myfile6
+dipinti@zipcodes-MBP Shell.Console-Lab % vim myfile6
+dipinti@zipcodes-MBP Shell.Console-Lab % vim myfile6
+dipinti@zipcodes-MBP Shell.Console-Lab % vim myfile6
+dipinti@zipcodes-MBP Shell.Console-Lab % mkdir dipinti
+dipinti@zipcodes-MBP Shell.Console-Lab % cd dipinti
+dipinti@zipcodes-MBP dipinti % mkdir dir1   
+dipinti@zipcodes-MBP dipinti % mkdir dir2 
+dipinti@zipcodes-MBP dipinti % mkdir /Users/dipinti/Dev/Shell.Console-Lab/dir2/dir3
+mkdir: /Users/dipinti/Dev/Shell.Console-Lab/dir2: No such file or directory
+dipinti@zipcodes-MBP dipinti % mkdir /Users/dipinti/Dev/Shell.Console-Lab/dir2/dipinti/dir3
+mkdir: /Users/dipinti/Dev/Shell.Console-Lab/dir2/dipinti: No such file or directory
+dipinti@zipcodes-MBP dipinti % mkdir /Users/dipinti/Dev/Shell.Console-Lab/dipinti/dir2/dir3
+dipinti@zipcodes-MBP dipinti % open .man
+The file /Users/dipinti/Dev/Shell.Console-Lab/dipinti/.man does not exist.
+dipinti@zipcodes-MBP dipinti % open man 
+The file /Users/dipinti/Dev/Shell.Console-Lab/dipinti/man does not exist.
+dipinti@zipcodes-MBP dipinti % cp -n myfile6 copiedfile
+cp: myfile6: No such file or directory
+dipinti@zipcodes-MBP dipinti % ls
+dir1	dir2
+dipinti@zipcodes-MBP dipinti % cd..
+zsh: command not found: cd..
+dipinti@zipcodes-MBP dipinti % cd~
+zsh: command not found: cd~
+dipinti@zipcodes-MBP dipinti % ls
+dir1	dir2
+dipinti@zipcodes-MBP dipinti % cd ..
+dipinti@zipcodes-MBP Shell.Console-Lab % ls
+dipinti		myFile2.txt	myfile2		myfile4		myfile6
+myFile.txt	myfile1		myfile3		myfile5
+dipinti@zipcodes-MBP Shell.Console-Lab % cp -n myfile6 copiedFile
+dipinti@zipcodes-MBP Shell.Console-Lab % ls
+copiedFile	myFile.txt	myfile1		myfile3		myfile5
+dipinti		myFile2.txt	myfile2		myfile4		myfile6
+dipinti@zipcodes-MBP Shell.Console-Lab % vim copiesFile
+dipinti@zipcodes-MBP Shell.Console-Lab % rm copiesFile
+dipinti@zipcodes-MBP Shell.Console-Lab % ls
+copiedFile	myFile.txt	myfile1		myfile3		myfile5
+dipinti		myFile2.txt	myfile2		myfile4		myfile6
+dipinti@zipcodes-MBP Shell.Console-Lab % vim copiedFile
+dipinti@zipcodes-MBP Shell.Console-Lab % vim copiedFile
+dipinti@zipcodes-MBP Shell.Console-Lab % mkdir newdir
+dipinti@zipcodes-MBP Shell.Console-Lab % mv copiedFile /Users/dipinti/Dev/Shell.Console-Lab/newdir
+dipinti@zipcodes-MBP Shell.Console-Lab % cd newdir
+dipinti@zipcodes-MBP newdir % ls
+copiedFile
+dipinti@zipcodes-MBP newdir % mv copiedFile .myFile
+dipinti@zipcodes-MBP newdir % ls
+dipinti@zipcodes-MBP newdir % open .
+dipinti@zipcodes-MBP newdir % ls -a
+.	..	.myFile
+dipinti@zipcodes-MBP newdir % cd .. 
+dipinti@zipcodes-MBP Shell.Console-Lab % ls
+dipinti		myFile2.txt	myfile2		myfile4		myfile6
+myFile.txt	myfile1		myfile3		myfile5		newdir
+dipinti@zipcodes-MBP Shell.Console-Lab % mkdir destroydir
+dipinti@zipcodes-MBP Shell.Console-Lab % cd destroydir
+dipinti@zipcodes-MBP destroydir % touch file1 file2 file3
+dipinti@zipcodes-MBP destroydir % mkdir dir1 dir2
+dipinti@zipcodes-MBP destroydir % cd dir1
+dipinti@zipcodes-MBP dir1 % touch file4
+dipinti@zipcodes-MBP dir1 % rm file4
+dipinti@zipcodes-MBP dir1 % ls
+dipinti@zipcodes-MBP dir1 % rm file4
+rm: file4: No such file or directory
+dipinti@zipcodes-MBP dir1 % touch file4
+dipinti@zipcodes-MBP dir1 % cd ..
+dipinti@zipcodes-MBP destroydir % ls
+dir1	dir2	file1	file2	file3
+dipinti@zipcodes-MBP destroydir % unlink file2
+dipinti@zipcodes-MBP destroydir % rm fle1
+rm: fle1: No such file or directory
+dipinti@zipcodes-MBP destroydir % rm file1
+dipinti@zipcodes-MBP destroydir % ls
+dir1	dir2	file3
+dipinti@zipcodes-MBP destroydir % rm -i file3
+remove file3? y
+dipinti@zipcodes-MBP destroydir % ls
+dir1	dir2
+dipinti@zipcodes-MBP destroydir % rm dir1
+rm: dir1: is a directory
+dipinti@zipcodes-MBP destroydir % rmdir dir1
+rmdir: dir1: Directory not empty
+dipinti@zipcodes-MBP destroydir % rmdir dir2
+dipinti@zipcodes-MBP destroydir % rm -R dir1
+dipinti@zipcodes-MBP destroydir % ls
+dipinti@zipcodes-MBP destroydir % echo "Hello" >-toughFile
+dipinti@zipcodes-MBP destroydir % rm toughFile
+rm: toughFile: No such file or directory
+dipinti@zipcodes-MBP destroydir % rm -toughFile
+rm: illegal option -- t
+usage: rm [-f | -i] [-dPRrvW] file ...
+       unlink file
+dipinti@zipcodes-MBP destroydir % rm -f -toughFile
+rm: illegal option -- t
+usage: rm [-f | -i] [-dPRrvW] file ...
+       unlink file
+dipinti@zipcodes-MBP destroydir % find / -name core
+find: /usr/sbin/authserver: Permission denied
+/usr/local/lib/node_modules/@angular/cli/node_modules/@angular-devkit/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/dist/vocabularies/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/lib/vocabularies/core
+find: /Library/Application Support/Apple/ParentalControls/Users: Permission denied
+find: /Library/Application Support/Apple/AssetCache/Data: Permission denied
+find: /Library/Application Support/ApplePushService: Permission denied
+find: /Library/Application Support/com.apple.TCC: Operation not permitted
+/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/platform/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/visualvm/core
+find: /Library/Caches/Desktop Pictures/F18EC09A-FDC6-4AF5-9B74-D85394CDA86F: Permission denied
+find: /Library/Caches/com.apple.iconservices.store: Permission denied
+find: /Library/Caches/com.apple.aned: Operation not permitted
+find: /System/Library/DirectoryServices/DefaultLocalDB/Default: Permission denied
+find: /System/Library/Templates/Data/Library/Application Support/Apple/ParentalControls/Users: Permission denied
+find: /System/Library/Templates/Data/Library/Application Support/com.apple.TCC: Operation not permitted
+find: /System/Library/Templates/Data/private/etc/cups/certs: Permission denied
+find: /System/Library/Templates/Data/private/var/install: Permission denied
+find: /System/Library/Templates/Data/private/var/ma: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/mqueue: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/saved: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/trace: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/defer: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/flush: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/deferred: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/corrupt: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/public: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/private: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/incoming: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/active: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/maildrop: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/hold: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/postfix/bounce: Permission denied
+find: /System/Library/Templates/Data/private/var/spool/cups: Permission denied
+find: /System/Library/Templates/Data/private/var/jabberd: Permission denied
+find: /System/Library/Templates/Data/private/var/audit: Permission denied
+find: /System/Library/Templates/Data/private/var/root: Permission denied
+find: /System/Library/Templates/Data/private/var/lib/postfix: Permission denied
+find: /System/Library/Templates/Data/private/var/db/appinstalld: Permission denied
+find: /System/Library/Templates/Data/private/var/db/diskimagesiod: Permission denied
+find: /System/Library/Templates/Data/private/var/db/locationd: Permission denied
+find: /System/Library/Templates/Data/private/var/db/analyticsd: Permission denied
+find: /System/Library/Templates/Data/private/var/db/rmd: Permission denied
+find: /System/Library/Templates/Data/private/var/db/knowledgegraphd: Permission denied
+find: /System/Library/Templates/Data/private/var/db/nsurlsessiond: Permission denied
+find: /System/Library/Templates/Data/private/var/db/fpsd: Permission denied
+find: /System/Library/Templates/Data/private/var/db/hidd: Permission denied
+find: /System/Library/Templates/Data/private/var/db/installcoordinationd: Permission denied
+find: /System/Library/Templates/Data/private/var/db/geod: Permission denied
+find: /System/Library/Templates/Data/private/var/db/oah: Operation not permitted
+find: /System/Library/Templates/Data/private/var/db/reportmemoryexception: Permission denied
+find: /System/Library/Templates/Data/private/var/db/lockdown: Permission denied
+find: /System/Library/Templates/Data/private/var/db/datadetectors: Permission denied
+find: /System/Library/Templates/Data/private/var/db/cmiodalassistants: Permission denied
+find: /System/Library/Templates/Data/private/var/db/com.apple.xpc.roleaccountd.staging: Permission denied
+find: /System/Library/Templates/Data/private/var/db/dslocal/nodes/Default: Permission denied
+find: /System/Library/Templates/Data/private/var/db/nearbyd: Permission denied
+find: /System/Library/Templates/Data/private/var/db/timed: Permission denied
+find: /System/Library/Templates/Data/private/var/db/applepay: Permission denied
+find: /System/Library/Templates/Data/private/var/db/fud: Permission denied
+find: /System/Library/Templates/Data/private/var/db/securityagent: Permission denied
+find: /System/Library/Templates/Data/private/var/db/ConfigurationProfiles/Store: Permission denied
+find: /System/Library/Templates/Data/private/var/db/caches/opendirectory: Permission denied
+find: /System/Library/Templates/Data/private/var/at/tabs: Permission denied
+find: /System/Library/Templates/Data/private/var/at/tmp: Permission denied
+find: /System/Library/Templates/Data/private/var/backups: Permission denied
+find: /System/Library/Templates/Data/private/var/agentx: Permission denied
+/System/Library/AssetsV2/com_apple_MobileAsset_MacSoftwareUpdate/5968e4faeba359dd5270ac282340cc4bd94d348c.asset/AssetData/payloadv2/ecc_data/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+find: /System/Library/Caches/com.apple.coresymbolicationd: Permission denied
+find: /System/Volumes/Update/Hardware: Permission denied
+find: /System/Volumes/Update/Controller: Permission denied
+find: /System/Volumes/Update/mnt1/usr/sbin/authserver: Permission denied
+find: /System/Volumes/Update/mnt1/.Trashes: Operation not permitted
+find: /System/Volumes/Update/mnt1/System/Library/DirectoryServices/DefaultLocalDB/Default: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/Library/Application Support/Apple/ParentalControls/Users: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/Library/Application Support/com.apple.TCC: Operation not permitted
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/etc/cups/certs: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/install: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/ma: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/mqueue: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/saved: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/trace: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/defer: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/flush: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/deferred: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/corrupt: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/public: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/private: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/incoming: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/active: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/maildrop: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/hold: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/postfix/bounce: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/spool/cups: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/jabberd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/audit: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/root: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/lib/postfix: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/appinstalld: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/diskimagesiod: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/locationd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/analyticsd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/rmd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/knowledgegraphd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/nsurlsessiond: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/fpsd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/hidd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/installcoordinationd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/geod: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/oah: Operation not permitted
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/reportmemoryexception: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/lockdown: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/datadetectors: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/cmiodalassistants: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/com.apple.xpc.roleaccountd.staging: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/dslocal/nodes/Default: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/nearbyd: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/timed: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/applepay: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/fud: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/securityagent: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/ConfigurationProfiles/Store: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/db/caches/opendirectory: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/at/tabs: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/at/tmp: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/backups: Permission denied
+find: /System/Volumes/Update/mnt1/System/Library/Templates/Data/private/var/agentx: Permission denied
+/System/Volumes/Update/mnt1/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+find: /System/Volumes/Preboot/.Trashes: Operation not permitted
+find: /System/Volumes/Data/home: Operation not permitted
+/System/Volumes/Data/usr/local/lib/node_modules/@angular/cli/node_modules/@angular-devkit/core
+/System/Volumes/Data/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/dist/vocabularies/core
+/System/Volumes/Data/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/lib/vocabularies/core
+find: /System/Volumes/Data/.Spotlight-V100: No such file or directory
+find: /System/Volumes/Data/boot: No such file or directory
+find: /System/Volumes/Data/Library/Application Support/Apple/ParentalControls/Users: Permission denied
+find: /System/Volumes/Data/Library/Application Support/Apple/AssetCache/Data: Permission denied
+find: /System/Volumes/Data/Library/Application Support/ApplePushService: Permission denied
+find: /System/Volumes/Data/Library/Application Support/com.apple.TCC: Operation not permitted
+^Z
+zsh: suspended  find / -name core
+dipinti@zipcodes-MBP destroydir % find / -name core 2> /dev/null
+/usr/local/lib/node_modules/@angular/cli/node_modules/@angular-devkit/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/dist/vocabularies/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/lib/vocabularies/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/platform/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/visualvm/core
+
+/System/Library/AssetsV2/com_apple_MobileAsset_MacSoftwareUpdate/5968e4faeba359dd5270ac282340cc4bd94d348c.asset/AssetData/payloadv2/ecc_data/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+^Z
+zsh: suspended  find / -name core 2> /dev/null
+dipinti@zipcodes-MBP destroydir % find / -name core >corefiles.log
+find: /usr/sbin/authserver: Permission denied
+find: /Library/Application Support/Apple/ParentalControls/Users: Permission denied
+find: /Library/Application Support/Apple/AssetCache/Data: Permission denied
+find: /Library/Application Support/ApplePushService: Permission denied
+find: /Library/Application Support/com.apple.TCC: Operation not permitted
+find: /Library/Caches/Desktop Pictures/F18EC09A-FDC6-4AF5-9B74-D85394CDA86F: Permission denied
+find: /Library/Caches/com.apple.iconservices.store: Permission denied
+find: /Library/Caches/com.apple.aned: Operation not permitted
+find: /System/Library/DirectoryServices/DefaultLocalDB/Default: Permission denied
+^Z
+zsh: suspended  find / -name core > corefiles.log
+dipinti@zipcodes-MBP destroydir % STDERR >/den/null
+zsh: no such file or directory: /den/null
+dipinti@zipcodes-MBP destroydir % STDERR >/dev/null
+zsh: command not found: STDERR
+dipinti@zipcodes-MBP destroydir % find / -name core > core.files.log 2> /dev/null
+^Z      
+zsh: suspended  find / -name core > core.files.log 2> /dev/null
+dipinti@zipcodes-MBP destroydir % find / -name core > core.files.log 2> /dev/null
+^Z  
+zsh: suspended  find / -name core > core.files.log 2> /dev/null
+dipinti@zipcodes-MBP destroydir % find / -name core > corefiles.log 2> /dev/null 
+^Z
+zsh: suspended  find / -name core > corefiles.log 2> /dev/null
+dipinti@zipcodes-MBP destroydir % find / -name core                             
+find: /usr/sbin/authserver: Permission denied
+/usr/local/lib/node_modules/@angular/cli/node_modules/@angular-devkit/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/dist/vocabularies/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/lib/vocabularies/core
+find: /Library/Application Support/Apple/ParentalControls/Users: Permission denied
+find: /Library/Application Support/Apple/AssetCache/Data: Permission denied
+find: /Library/Application Support/ApplePushService: Permission denied
+find: /Library/Application Support/com.apple.TCC: Operation not permitted
+/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/platform/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/visualvm/core
+find: /Library/Caches/Desktop Pictures/F18EC09A-FDC6-4AF5-9B74-D85394CDA86F: Permission denied
+find: /Library/Caches/com.apple.iconservices.store: Permission denied
+find: /Library/Caches/com.apple.aned: Operation not permitted
+find: /System/Library/DirectoryServices/DefaultLocalDB/Default: Permission denied
+^Z
+zsh: suspended  find / -name core
+dipinti@zipcodes-MBP destroydir % find / -name core 2>/dev/null
+/usr/local/lib/node_modules/@angular/cli/node_modules/@angular-devkit/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/dist/vocabularies/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/lib/vocabularies/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/platform/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/visualvm/core
+/System/Library/AssetsV2/com_apple_MobileAsset_MacSoftwareUpdate/5968e4faeba359dd5270ac282340cc4bd94d348c.asset/AssetData/payloadv2/ecc_data/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+^Z
+zsh: suspended  find / -name core 2> /dev/null
+dipinti@zipcodes-MBP destroydir % find / -name core >corefiles.log
+find: /usr/sbin/authserver: Permission denied
+find: /Library/Application Support/Apple/ParentalControls/Users: Permission denied
+find: /Library/Application Support/Apple/AssetCache/Data: Permission denied
+find: /Library/Application Support/ApplePushService: Permission denied
+find: /Library/Application Support/com.apple.TCC: Operation not permitted
+find: /Library/Caches/Desktop Pictures/F18EC09A-FDC6-4AF5-9B74-D85394CDA86F: Permission denied
+find: /Library/Caches/com.apple.iconservices.store: Permission denied
+find: /Library/Caches/com.apple.aned: Operation not permitted
+find: /System/Library/DirectoryServices/DefaultLocalDB/Default: Permission denied
+^Z
+zsh: suspended  find / -name core > corefiles.log
+dipinti@zipcodes-MBP destroydir % find / -name core 2>/dev/null    
+/usr/local/lib/node_modules/@angular/cli/node_modules/@angular-devkit/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/dist/vocabularies/core
+/usr/local/lib/node_modules/@angular/cli/node_modules/ajv/lib/vocabularies/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/platform/core
+/Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/lib/visualvm/visualvm/core
+/System/Library/AssetsV2/com_apple_MobileAsset_MacSoftwareUpdate/5968e4faeba359dd5270ac282340cc4bd94d348c.asset/AssetData/payloadv2/ecc_data/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core
+^Z
+zsh: suspended  find / -name core 2> /dev/null
+dipinti@zipcodes-MBP destroydir % find / -name core &>corefiles.log
+^Z
+zsh: suspended  find / -name core &> corefiles.log
+dipinti@zipcodes-MBP destroydir % python -m SimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+^Z
+zsh: suspended  python -m SimpleHTTPServer
+dipinti@zipcodes-MBP destroydir % jobs
+[1]    suspended  find / -name core
+[2]    suspended  find / -name core 2> /dev/null
+[3]    suspended  find / -name core > corefiles.log
+[4]    suspended  find / -name core > core.files.log 2> /dev/null
+[5]    suspended  find / -name core > core.files.log 2> /dev/null
+[6]    suspended  find / -name core > corefiles.log 2> /dev/null
+[7]    suspended  find / -name core
+[8]    suspended  find / -name core 2> /dev/null
+[9]    suspended  find / -name core > corefiles.log
+[10]    suspended  find / -name core 2> /dev/null
+[11]  - suspended  find / -name core &> corefiles.log
+[12]  + suspended  python -m SimpleHTTPServer
+dipinti@zipcodes-MBP destroydir % 
+
